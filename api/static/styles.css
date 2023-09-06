@@ -1,0 +1,153 @@
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/*
+  2. Remove default margin
+*/
+* {
+  margin: 0;
+}
+
+html {
+  font-family: "Montserrat", sans-serif;
+  background-color: black;
+}
+
+body {
+  font-size: 1.1rem;
+  color: white;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #1fd760;
+}
+
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 0.8rem;
+  }
+}
+
+.container {
+  margin: auto 2rem;
+  justify-items: center;
+  text-align: center;
+
+  /* margin: 0 2rem; */
+}
+
+.intro-text {
+  padding: 1rem 0 1rem 0;
+  background: radial-gradient(ellipse 100% 15% at bottom, #1fd760, transparent 20%);
+}
+
+.splash-header {
+  padding: 1rem 0;
+}
+
+.genre-pool {
+  margin: 0.5rem 0;
+  justify-content: center;
+  display: flex;
+  gap: 0.2rem 0.2rem;
+  flex-wrap: wrap;
+  max-height: 1000px;
+  opacity: 1;
+  transition: height 0.3s ease, opacity 0.6s ease;
+  /* overflow: hidden; */
+}
+
+.genre-pool.hidden {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: height 0.3s ease, opacity 0.6s ease;
+}
+
+.genre-button {
+  font-size: 0.9rem;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  background-color: #444444;
+  margin: 0 0;
+}
+
+.genre-button.clicked {
+  background-color: #dddddd;
+}
+
+.action-buttons button {
+  display: inline-block;
+  width: auto;
+}
+
+.highlight {
+  background-color: #1fd760;
+}
+
+button {
+  padding: 0.7rem 1rem;
+  margin: 0.3rem 0.1rem;
+  font-size: 1.2rem;
+  font-family: "Montserrat", sans-serif;
+  border: 0px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.generator {
+  padding: 1rem 0;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-evenly;
+  background: radial-gradient(ellipse 100% 10% at top, #d8c78d, transparent 50%);
+}
+
+.spotify-embed {
+  width: 300px;
+  height: 352px;
+}
+
+@media screen and (max-width: 1024px) {
+  .spotify-embed {
+    width: 224px;
+    height: 80px;
+  }
+
+  .generator {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .action-buttons button {
+    display: block;
+    margin: 0.3rem auto 0.3rem auto;
+  }
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  padding: 0 0 0.5rem 0.5rem;
+}
+
+.danny {
+  color: #d8c78d;
+  text-shadow: 0 0 1px #d8c78d;
+}
