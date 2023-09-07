@@ -12,6 +12,7 @@ import base64
 from requests import post, get
 import json
 import random
+import logging
 
 def get_token():
     auth_string = client_id + ":" + client_secret
@@ -32,26 +33,12 @@ def get_token():
 def get_auth_header(token):
     return{"Authorization": "Bearer " + token}
 
-# def get_song_by_id(token,song_id):
-#     url = f"https://api.spotify.com/v1/tracks/{song_id}/"
-#     headers = get_auth_header(token)
-#     result = get(url, headers=headers)
-#     json_result = json.loads(result.content)["name"] + " " + json.loads(result.content)["artists"][0]['name']
-#     return json_result
-
 def get_all_genres(token):
     url = f"https://api.spotify.com/v1/recommendations/available-genre-seeds/"
     headers = get_auth_header(token)
     result = get(url, headers=headers)
     json_result = json.loads(result.content)["genres"]
     return json_result
-
-# def get_random_genre(token):
-#     url = f"https://api.spotify.com/v1/recommendations/available-genre-seeds/"
-#     headers = get_auth_header(token)
-#     result = get(url, headers=headers)
-#     json_result = json.loads(result.content)["genres"]
-#     return random.choice(json_result)
 
 def convert_key(key,key_mode): # Convert Key in Pitch Class Notation into English
     key_dict = {-1:"Unknown",0:"C",1:"C#",2:"D",3:"D#",4:"E",5:"F",6:"F#",7:"G",8:"G#",9:"A",10:"A#",11:"B"}
@@ -112,6 +99,10 @@ embed_url = "https://open.spotify.com/embed/track/"
 # Create the Flask app
 app = Flask(__name__)
 
+# Debug logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 # Session setup - for user genre filter choice
 if os.environ.get('FLASK_ENV') == 'production': # production deployment on vercel
     app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
@@ -133,11 +124,33 @@ def index():
 
 @app.route('/post_genres', methods=['GET', 'POST'])
 def submit_genres():
-    data = request.get_json()
-    chosen_genres = data['chosenGenresList']
-    session['selected_genres'] = [genre for genre in genres_list if genre in chosen_genres]
 
-    return jsonify({'message': 'Genres updated'})
+    ################### TEMPORARY DEBUG LOGGING ###################
+    logger.debug('Received a POST request to /post_genres')
+
+    if request.is_json:
+        # Log the content type of the request
+        logger.debug('Content-Type: %s', request.content_type)
+
+        # Log the JSON data
+        logger.debug('JSON data received: %s', request.get_json())
+
+        # Process JSON data
+        data = request.json
+
+        # THE BELOW FOUR LINES ARE MY ORIGINAL CODE
+        data = request.get_json()
+        chosen_genres = data['chosenGenresList']
+        session['selected_genres'] = [genre for genre in genres_list if genre in chosen_genres]
+        return jsonify({'message': 'Genres updated'})
+
+    else:
+        return jsonify({'error': 'Unsupported Media Type'}), 415
+
+
+
+
+
 
 @app.route('/get_songs', methods=['GET'])
 def get_songs():
