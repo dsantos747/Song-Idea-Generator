@@ -130,12 +130,12 @@ else:
 Session(app)
 
 # Define a route that handles a GET request
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html', genres_list=genres_list)
 
 
-@app.route('/post_genres', methods=['POST'])
+@app.route('/post_genres', methods=['GET', 'POST'])
 def submit_genres():
     data = request.get_json()
     chosen_genres = data['chosenGenresList']
