@@ -13,7 +13,7 @@ generateButton.addEventListener("click", function () {
 
   fetch("/post_genres", {
     method: "POST",
-    // headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(requestData),
   })
     .then((response) => response.json())
