@@ -119,6 +119,7 @@ button {
 .spotify-embed {
   width: 300px;
   height: 352px;
+  margin: 0.5rem 0;
 }
 
 @media screen and (max-width: 1024px) {

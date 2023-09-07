@@ -7,10 +7,12 @@ from dotenv import load_dotenv
 from flask import Flask, request, render_template, jsonify, session
 from flask_session import Session
 import os
+import redis
 import base64
 from requests import post, get
 import json
 import random
+import secrets
 
 def get_token():
     auth_string = client_id + ":" + client_secret
@@ -31,12 +33,12 @@ def get_token():
 def get_auth_header(token):
     return{"Authorization": "Bearer " + token}
 
-def get_song_by_id(token,song_id):
-    url = f"https://api.spotify.com/v1/tracks/{song_id}/"
-    headers = get_auth_header(token)
-    result = get(url, headers=headers)
-    json_result = json.loads(result.content)["name"] + " " + json.loads(result.content)["artists"][0]['name']
-    return json_result
+# def get_song_by_id(token,song_id):
+#     url = f"https://api.spotify.com/v1/tracks/{song_id}/"
+#     headers = get_auth_header(token)
+#     result = get(url, headers=headers)
+#     json_result = json.loads(result.content)["name"] + " " + json.loads(result.content)["artists"][0]['name']
+#     return json_result
 
 def get_all_genres(token):
     url = f"https://api.spotify.com/v1/recommendations/available-genre-seeds/"
@@ -45,12 +47,12 @@ def get_all_genres(token):
     json_result = json.loads(result.content)["genres"]
     return json_result
 
-def get_random_genre(token):
-    url = f"https://api.spotify.com/v1/recommendations/available-genre-seeds/"
-    headers = get_auth_header(token)
-    result = get(url, headers=headers)
-    json_result = json.loads(result.content)["genres"]
-    return random.choice(json_result)
+# def get_random_genre(token):
+#     url = f"https://api.spotify.com/v1/recommendations/available-genre-seeds/"
+#     headers = get_auth_header(token)
+#     result = get(url, headers=headers)
+#     json_result = json.loads(result.content)["genres"]
+#     return random.choice(json_result)
 
 def convert_key(key,key_mode): # Convert Key in Pitch Class Notation into English
     key_dict = {-1:"Unknown",0:"C",1:"C#",2:"D",3:"D#",4:"E",5:"F",6:"F#",7:"G",8:"G#",9:"A",10:"A#",11:"B"}
@@ -99,6 +101,8 @@ def random_song(token,n,genres):
     return song_dict_arr
 
 
+print(secrets.token_hex(32))
+
 # Pre-setup variables
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
@@ -112,8 +116,17 @@ embed_url = "https://open.spotify.com/embed/track/"
 # Create the Flask app
 app = Flask(__name__)
 
-# Set up session - for user genre filter choice
-app.config['SESSION_TYPE'] = 'filesystem'
+# Session setup - for user genre filter choice
+if os.environ.get('FLASK_ENV') == 'production': # production deployment on vercel
+    app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+    app.config['SESSION_TYPE'] = 'redis'
+    app.config['SESSION_PERMANENT'] = False
+    app.config['SESSION_USE_SIGNER'] = True
+    app.config['SESSION_KEY_PREFIX'] = 'song_gen_session'
+    app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
+else:
+    app.config['SESSION_TYPE'] = 'filesystem' # local development server, without redis 
+
 Session(app)
 
 # Define a route that handles a GET request
