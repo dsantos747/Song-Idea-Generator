@@ -13,7 +13,7 @@ generateButton.addEventListener("click", function () {
 
   fetch("/post_genres", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    // headers: { "Content-Type": "application/json" },
     body: JSON.stringify(requestData),
   })
     .then((response) => response.json())
@@ -23,16 +23,10 @@ generateButton.addEventListener("click", function () {
         .then((response) => response.json())
         .then((data) => {
           document.getElementById("song-1-embed").src = data.song_1_embed;
-          //   document.getElementById("song-1-name").textContent = data.song_1_name;
-          //   document.getElementById("song-1-artist").textContent = data.song_1_artist;
           document.getElementById("song-1-genre").textContent = data.song_1_genre;
           document.getElementById("song-2-embed").src = data.song_2_embed;
-          //   document.getElementById("song-2-name").textContent = data.song_2_name;
-          //   document.getElementById("song-2-artist").textContent = data.song_2_artist;
           document.getElementById("song-2-key").textContent = data.song_2_key;
           document.getElementById("song-3-embed").src = data.song_3_embed;
-          //   document.getElementById("song-3-name").textContent = data.song_3_name;
-          //   document.getElementById("song-3-artist").textContent = data.song_3_artist;
           document.getElementById("song-3-bpm").textContent = data.song_3_bpm;
           document.getElementById("song-3-time").textContent = data.song_3_time_signature;
           generateButton.textContent = "Generate Songs";

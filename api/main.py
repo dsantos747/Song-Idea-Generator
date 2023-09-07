@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from flask import Flask, request, render_template, jsonify, session
 from flask_session import Session
 import os
-import redis
+# import redis
 import base64
 from requests import post, get
 import json
@@ -99,9 +99,6 @@ def random_song(token,n,genres):
         i+=1
     
     return song_dict_arr
-
-
-print(secrets.token_hex(32))
 
 # Pre-setup variables
 load_dotenv()
