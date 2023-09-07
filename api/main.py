@@ -7,12 +7,11 @@ from dotenv import load_dotenv
 from flask import Flask, request, render_template, jsonify, session
 from flask_session import Session
 import os
-# import redis
+import redis
 import base64
 from requests import post, get
 import json
 import random
-import secrets
 
 def get_token():
     auth_string = client_id + ":" + client_secret
