@@ -3,7 +3,7 @@
 # - Run query based on genre, key and bpm - to find how many songs exist with that exact combination
 
 # Imports
-from python_dotenv import load_dotenv # type: ignore
+from dotenv import load_dotenv
 from flask import Flask, request, render_template, jsonify, session
 from flask_session import Session
 import os
