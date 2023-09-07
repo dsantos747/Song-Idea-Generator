@@ -12,7 +12,6 @@ import base64
 from requests import post, get
 import json
 import random
-import logging
 
 def get_token():
     auth_string = client_id + ":" + client_secret
@@ -99,10 +98,6 @@ embed_url = "https://open.spotify.com/embed/track/"
 # Create the Flask app
 app = Flask(__name__)
 
-# Debug logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
 # Session setup - for user genre filter choice
 if os.environ.get('FLASK_ENV') == 'production': # production deployment on vercel
     app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
@@ -110,7 +105,7 @@ if os.environ.get('FLASK_ENV') == 'production': # production deployment on verce
     app.config['SESSION_PERMANENT'] = False
     app.config['SESSION_USE_SIGNER'] = True
     app.config['SESSION_KEY_PREFIX'] = 'song_gen_session'
-    app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
+    app.config['SESSION_REDIS'] = redis.StrictRedis(host='redis-13815.c304.europe-west1-2.gce.cloud.redislabs.com', port=13815, db=0, password=os.getenv("DB_PASS"))
 else:
     app.config['SESSION_TYPE'] = 'filesystem' # local development server, without redis 
 
@@ -124,20 +119,7 @@ def index():
 
 @app.route('/post_genres', methods=['GET', 'POST'])
 def submit_genres():
-
-    ################### TEMPORARY DEBUG LOGGING ###################
-    logger.debug('Received a POST request to /post_genres')
-
     if request.is_json:
-        # Log the content type of the request
-        logger.debug('Content-Type: %s', request.content_type)
-
-        # Log the JSON data
-        logger.debug('JSON data received: %s', request.get_json())
-
-        # Process JSON data
-        data = request.json
-
         # THE BELOW FOUR LINES ARE MY ORIGINAL CODE
         data = request.get_json()
         chosen_genres = data['chosenGenresList']
@@ -146,10 +128,6 @@ def submit_genres():
 
     else:
         return jsonify({'error': 'Unsupported Media Type'}), 415
-
-
-
-
 
 
 @app.route('/get_songs', methods=['GET'])
