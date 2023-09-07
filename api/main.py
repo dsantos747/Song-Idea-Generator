@@ -143,7 +143,6 @@ def submit_genres():
 
     return jsonify({'message': 'Genres updated'})
 
-# Define a route that handles a POST request
 @app.route('/get_songs', methods=['GET'])
 def get_songs():
     if request.method == 'GET':
@@ -173,4 +172,4 @@ def get_songs():
                        song_3_time_signature=song_3_time_signature)
 
 if __name__ == '__main__':
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    app.run()
