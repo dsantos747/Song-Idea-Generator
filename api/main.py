@@ -1,7 +1,8 @@
 # Imports
 from dotenv import load_dotenv
 from flask import Flask, request, render_template, jsonify, session
-from flask_session import Session
+
+# from flask_session import Session
 from flask_cors import CORS
 import os
 import base64
@@ -122,17 +123,7 @@ embed_url = "https://open.spotify.com/embed/track/"
 
 # Create the Flask app
 app = Flask(__name__)
-
-if os.environ.get("FLASK_ENV") == "production":  # production deployment on vercel
-    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-    app.config["SESSION_TYPE"] = "null"
-    app.config["SESSION_PERMANENT"] = False
-    app.config["SESSION_USE_SIGNER"] = True
-    app.config["SESSION_KEY_PREFIX"] = "song_gen_session"
-else:
-    app.config["SESSION_TYPE"] = "filesystem"  # local development server
-
-Session(app)
+app.secret_key = os.getenv("SECRET_KEY")
 CORS(app)
 
 
