@@ -19,13 +19,13 @@
         <div class="splash-header">
           <h1>Song Inspiration Generator</h1>
           <h3>
-            I am Song Inspiration Generator, and I can help you make your next hit.<br />With one click, let me tell you
-            what style, key and bpm to use.<br />Use the genre filters to keep me in check.<br />The rest is up to you.
+            I am Song Inspiration Generator, and I can help you make your next hit.<br />With one click, let me tell you what style, key and
+            bpm to use.<br />Use the genre filters to keep me in check.<br />The rest is up to you.
           </h3>
         </div>
         <div id="genre-pool" class="genre-pool hidden">
           {% for genre in genres_list %}
-          <button id="{{ genre }}" class="genre-button">{{ genre|replace('-', ' ') }}</button>
+          <button id="{{ genre }}" class="genre-button">{{ genre|replace('-', ' ')|title }}</button>
           {% endfor %}
         </div>
         <div class="action-buttons">
@@ -37,14 +37,7 @@
       <div class="generator">
         <div class="col">
           <h4>Make a song in the style of:</h4>
-          <iframe
-            id="song-1-embed"
-            class="spotify-embed"
-            src=""
-            frameborder="0"
-            allowtransparency="true"
-            allow="encrypted-media"
-          ></iframe>
+          <iframe id="song-1-embed" class="spotify-embed" src="" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
           <p>
             <!--<strong>Name:</strong> <span id="song-1-name"></span><br /><strong>Artist:</strong>
             <span id="song-1-artist"></span><br />--><strong><span style="color: #1fd760">Genre:</span></strong>
@@ -53,14 +46,7 @@
         </div>
         <div class="col">
           <h4>In the same key as:</h4>
-          <iframe
-            id="song-2-embed"
-            class="spotify-embed"
-            src=""
-            frameborder="0"
-            allowtransparency="true"
-            allow="encrypted-media"
-          ></iframe>
+          <iframe id="song-2-embed" class="spotify-embed" src="" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
           <p>
             <!--<strong>Name:</strong> <span id="song-2-name"></span><br /><strong>Artist:</strong>
             <span id="song-2-artist"></span><br />--><strong><span style="color: #1fd760">Key:</span></strong>
@@ -69,18 +55,11 @@
         </div>
         <div class="col">
           <h4>With the same rhythm as:</h4>
-          <iframe
-            id="song-3-embed"
-            class="spotify-embed"
-            src=""
-            frameborder="0"
-            allowtransparency="true"
-            allow="encrypted-media"
-          ></iframe>
+          <iframe id="song-3-embed" class="spotify-embed" src="" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
           <p>
             <!--<strong>Name:</strong> <span id="song-3-name"></span><br /><strong>Artist:</strong>
-            <span id="song-3-artist"></span><br />--><strong><span style="color: #1fd760">BPM:</span></strong>
-            <span id="song-3-bpm"></span><br /><strong><span style="color: #1fd760">Time Signature:</span></strong
+            <span id="song-3-artist"></span><br />--><strong><span style="color: #1fd760">BPM:</span></strong> <span id="song-3-bpm"></span
+            ><br /><strong><span style="color: #1fd760">Time Signature:</span></strong
             ><span id="song-3-time"></span>
           </p>
         </div>

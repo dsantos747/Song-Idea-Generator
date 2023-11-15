@@ -1,15 +1,9 @@
-# Tasks
-# - Incorporate "popularity" or other filters into random song selection
-# - Run query based on genre, key and bpm - to find how many songs exist with that exact combination
-
 # Imports
 from dotenv import load_dotenv
 from flask import Flask, request, render_template, jsonify, session
 from flask_session import Session
 from flask_cors import CORS
 import os
-
-# import redis
 import base64
 from requests import post, get
 import json
@@ -123,29 +117,13 @@ client_secret = os.getenv("CLIENT_SECRET")
 
 token = get_token()
 genres_list = get_all_genres(token)
+print(genres_list)
 selected_genres = genres_list
 embed_url = "https://open.spotify.com/embed/track/"
 
 # Create the Flask app
 app = Flask(__name__)
-
-# Session setup - for user genre filter choice
-if os.environ.get("FLASK_ENV") == "production":  # production deployment on vercel
-    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-    app.config["SESSION_TYPE"] = "filesystem"  # TEST - cookies on vercel
-
-    # app.config["SESSION_TYPE"] = "redis"
-    # app.config["SESSION_PERMANENT"] = False
-    # app.config["SESSION_USE_SIGNER"] = True
-    # app.config["SESSION_KEY_PREFIX"] = "song_gen_session"
-    # app.config["SESSION_REDIS"] = redis.StrictRedis(
-    #     host="redis-13815.c304.europe-west1-2.gce.cloud.redislabs.com",
-    #     port=13815,
-    #     db=0,
-    #     password=os.getenv("DB_PASS"),
-    # )
-else:
-    app.config["SESSION_TYPE"] = "filesystem"  # local development server, without redis
+app.config["SESSION_TYPE"] = "filesystem"
 
 Session(app)
 CORS(app)
