@@ -122,7 +122,14 @@ embed_url = "https://open.spotify.com/embed/track/"
 
 # Create the Flask app
 app = Flask(__name__)
-app.config["SESSION_TYPE"] = "filesystem"
+
+if os.environ.get("FLASK_ENV") == "production":  # production deployment on vercel
+    app.config["SESSION_TYPE"] = "null"
+    app.config["SESSION_PERMANENT"] = False
+    app.config["SESSION_USE_SIGNER"] = True
+    app.config["SESSION_KEY_PREFIX"] = "song_gen_session"
+else:
+    app.config["SESSION_TYPE"] = "filesystem"  # local development server
 
 Session(app)
 CORS(app)
@@ -142,7 +149,9 @@ def submit_genres():
         session["selected_genres"] = [
             genre for genre in genres_list if genre in chosen_genres
         ]
-        return jsonify({"message": "Genres updated"})
+        return jsonify(
+            {"message": "Genres updated", "genres": session["selected_genres"]}
+        )
 
     else:
         return jsonify({"error": "Unsupported Media Type"}), 415
