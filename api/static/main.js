@@ -11,11 +11,14 @@ generateButton.addEventListener('click', function () {
 
   generateButton.textContent = '...thinking...';
 
+  console.log(requestData);
+
   fetch('/post_genres', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(requestData),
   })
+    .then(console.log('posted genres'))
     .then((response) => response.json())
     .then((data) => {
       console.log(data);

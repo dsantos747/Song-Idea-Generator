@@ -117,7 +117,6 @@ client_secret = os.getenv("CLIENT_SECRET")
 
 token = get_token()
 genres_list = get_all_genres(token)
-print(genres_list)
 selected_genres = genres_list
 embed_url = "https://open.spotify.com/embed/track/"
 
